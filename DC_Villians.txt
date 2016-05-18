@@ -1,0 +1,97 @@
+1|Magneto
+2|Joker
+3|Doctor Doom
+4|Lex Luthor
+5|Galactus
+6|Darkseid
+7|Ra's al Ghul
+8|Loki
+10|Kingpin
+11|Catwoman
+12|Two-Face
+13|Norman Osborn
+14|Red Skull
+15|Sinestro
+16|Black Adam
+17|Brainiac
+18|Mystique
+19|Juggernaut
+20|Bullseye
+21|Ozymandias
+22|Venom
+23|Ultron
+24|Apocalypse
+25|Bizarro
+26|Kid Marvelman
+27|Captain Cold
+28|Doctor Octopus
+29|Mr|Sinister
+30|General Zod
+31|Professor Zoom
+32|Deathstroke
+33|Cyborg Superman
+34|Bane
+35|Gorilla Grodd
+36|Vandal Savage
+37|Zoom
+38|Sentinels
+39|Shredder
+40|Baron Helmut Zemo
+41|Mongul
+42|Talia al Ghul
+43|Deadshot
+44|Harley Quinn
+45|Doomsday
+46|Thanos
+47|Mephisto
+48|Anti-Monitor
+49|Cassandra Nova
+50|Penguin
+51|Metallo
+52|Kraven the Hunter
+53|Abomination
+54|Sebastian Shaw
+55|Dormammu
+56|Hobgoblin (Kingsley)
+57|Scarecrow
+58|Riddler 
+59|Amanda Waller
+60|Parasite
+61|Lizard
+62|Leader
+63|Poison Ivy
+64|Kang
+65|Herr Starr
+66|Mr|Freeze
+67|Lucifer Morningstar
+68|Cheetah (Minerva)
+69|William Stryker
+70|Thunderbolt Ross
+71|Sandman
+72|Clayface (Karlo)
+73|Saint of Killers
+74|Magog 
+75|Mr. Mxyzptlk
+76|Proteus
+77|Lady Deathstrike
+78|Mirror Master (McCulloch)
+79|Prometheus
+80|Mandarin
+81|Dr. Sivana
+82|Grigori Rasputin
+83|Arthur Light
+84|Mysterio
+85|The Governor
+86|Electro
+87|Hunter Rose
+88|Shade
+89|Carnage
+91|Parallax
+92|Omni-Man
+93|Annihilus
+94|Omega Red
+95|Despero
+96|Violator
+97|Mastermind
+98|Fin Fang Foom
+99|M.O.D.O.K.
