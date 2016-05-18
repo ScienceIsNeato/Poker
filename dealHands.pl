@@ -1,11 +1,13 @@
 use warnings;
 use Data::Dumper;
 
-my $maxPlayers = 7; # there are 9 face cards times 4 suits, so 36 available cards. Thus, there can be no more than 7 players
+my $maxPlayers = 10; # there are 9 face cards times 4 suits, so 36 available cards. Thus, there can be no more than 7 players
 my $num_args = 0;
 my $num_players = 0;
 my %possible_player_names=();
 my @current_players;
+my %hands = ();
+my %cards= ();
 
 if (!defined $ARGV[0])
 {
@@ -25,7 +27,10 @@ else
 
 &generateDeck();
 
+&dealCards();
 
+#print Dumper(%cards);
+#print Dumper(%hands);
  
 
  
@@ -43,6 +48,7 @@ sub generatePlayers()
 		my @vals=split(/\|/, $line);
 
 		#$possible_player_names->{'$vals[0]'}='$vals[1]';
+		chomp($vals[1]);
 		$possible_player_names{ $vals[0] } = $vals[1];
 	}
 	
@@ -67,9 +73,9 @@ sub generateDeck()
 	my @suits = ('Clubs', 'Diamonds', 'Hearts', 'Spades');
 	my @faceVals = ('2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace');
 	
-	my %cards;
-	$cards{"1"}{Suit}   = $suits[0];
-	$cards{"1"}{FaceVal}   = $faceVals[2];
+
+	#$cards{"1"}{Suit}   = $suits[0];
+	#$cards{"1"}{FaceVal}   = $faceVals[2];
 	
 	my $tmp_key = 1; # keys will go from 1 o 52
 	foreach my $suit (@suits) 
@@ -82,5 +88,32 @@ sub generateDeck()
 		}
 	}
 	
-	print Dumper(%cards);
+	#print Dumper(%cards);
 }
+
+sub dealCards()
+{
+	foreach my $name (@current_players)
+	{
+		for(my $cardNum=1; $cardNum <=5 ; $cardNum++)
+		{
+			my $cardKey = getCard();
+			my $card = $cards{$cardKey};
+			$hands{ $name }{ $cardNum }=$card;#$cards{$cardNum};
+			delete ($cards{$cardKey});
+		}
+	}
+	
+	#print Dumper(%hands);
+}
+
+sub getCard()
+{
+		my @hash_keys    = keys %cards;
+		#print "$_\n" for keys %possible_player_names;
+		my $random_key = $hash_keys[rand @hash_keys];
+		#print "rand key is $random_key\n";
+		return $random_key;
+
+}
+
