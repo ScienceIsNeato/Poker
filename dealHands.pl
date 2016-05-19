@@ -15,6 +15,8 @@ my %possible_player_names=(); # hash of player names pulled from DC_Villains.txt
 my @current_players; # array containing players for this game
 my %hands = (); # Hash of hashes that contains all hands. Structure is 
 #{player_name}|
+#						|>{card_1}|
+#										|->{suit}
 #										|->{val}
 #						|>{card_2}|
 #										|->{suit}
