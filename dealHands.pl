@@ -13,25 +13,25 @@ my $num_args = 0;
 my $num_players = 0;
 my %possible_player_names=(); # hash of player names pulled from DC_Villains.txt
 my @current_players; # array containing players for this game
-my %hands = (); # Hash of hashes that contains all hands. Structure is {player_name}|
-                          #																							 |>{card_1}|
-                          #																										     |->{suit}
-						  #																										     |->{val}
-                          #																							 |>{card_2}|
-                          #																										     |->{suit}
-						  #																										     |->{val}
-                          #																							 |>{card_3}|
-                          #																										     |->{suit}
-						  #																										     |->{val}
-                          #																							 |>{card_4}|
-                          #																										     |->{suit}
-						  #																										     |->{val}
-                          #																							 |>{card_5}|
-                          #																										     |->{suit}
-						  #																										     |->{val}
-my %cards= ();   # Hash of all reaining available cards where structure is {card_key}|
-                          #																						   |>{suit}
-                          #																						   |>{val}
+my %hands = (); # Hash of hashes that contains all hands. Structure is 
+#{player_name}|
+#										|->{val}
+#						|>{card_2}|
+#										|->{suit}
+#										|->{val}
+#						|>{card_3}|
+#										|->{suit}
+#										|->{val}
+#						|>{card_4}|
+#										|->{suit}
+#										|->{val}
+#						|>{card_5}|
+#										|->{suit}
+#										|->{val}
+my %cards= ();   # Hash of all reaining available cards where structure is 
+#{card_key}|
+#				  |>{suit}
+#				  |>{val}
 						   
 # Parse command line input
 if (!defined $ARGV[0] || !@ARGV  || @ARGV!=1 )
