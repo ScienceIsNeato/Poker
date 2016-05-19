@@ -1,15 +1,40 @@
 use warnings;
 use Data::Dumper;
 
-my $maxPlayers = 10; # there are 9 face cards times 4 suits, so 36 available cards. Thus, there can be no more than 7 players
+# Author: William Martin
+# Date Created: May 17, 2016
+# Program Description: This program takes in a number of players and randomly deals 5 playing cards to each player.
+#								 Player names are pulled from a list of supervillians (DC_Villains.txt, in same directory).
+#                               Given the size of a standard deck, the maximum number of players is 10.
+
+# Global Variables
+my $maxPlayers = 10; # there are 13 face cards times 4 suits, so 52 available cards. Thus, there can be no more than 10 players
 my $num_args = 0;
 my $num_players = 0;
-my %possible_player_names=();
-my @current_players;
-my %hands = ();
-my %cards= ();
-
-if (!defined $ARGV[0])
+my %possible_player_names=(); # hash of player names pulled from DC_Villains.txt
+my @current_players; # array containing players for this game
+my %hands = (); # Hash of hashes that contains all hands. Structure is {player_name}|
+                          #																							 |>{card_1}|
+                          #																										     |->{suit}
+						  #																										     |->{val}
+                          #																							 |>{card_2}|
+                          #																										     |->{suit}
+						  #																										     |->{val}
+                          #																							 |>{card_3}|
+                          #																										     |->{suit}
+						  #																										     |->{val}
+                          #																							 |>{card_4}|
+                          #																										     |->{suit}
+						  #																										     |->{val}
+                          #																							 |>{card_5}|
+                          #																										     |->{suit}
+						  #																										     |->{val}
+my %cards= ();   # Hash of all reaining available cards where structure is {card_key}|
+                          #																						   |>{suit}
+                          #																						   |>{val}
+						   
+# Parse command line input
+if (!defined $ARGV[0] || !@ARGV  || @ARGV!=1 )
 {
 		print "\nUsage: dealHands.pl num_players\n";
 		exit;
@@ -22,33 +47,39 @@ else
 		die "Maximum number of players is $maxPlayers. Exiting...\n";
 	}
 }
-
+ 
+#### START  Main program ####
+# Create a list of players
 &generatePlayers();
 
+# Create the full playing deck
 &generateDeck();
 
+# Distribute cards to the players (random - the same card can only be used once)
 &dealCards();
 
-#print Dumper(%cards);
-#print Dumper(%hands);
- 
+# Print the hands to the command line
+&showHands();
+
+#### END  Main program ####
+
+exit 0;
 
  
-#  Function Inputs:
+#  Function Inputs: N/A
 #  Function Description:
 #		this function takes in a number of players and randomly generates players from the DC_Villians text file
 sub generatePlayers()
 {	
-	#print "num players is $num_players\n";
-	my $file = 'DC_Villians.txt';
+	my $file = 'DC_Villians.txt'; 
 	open my $FH, $file or die "Could not open $file: $!";
-
+ 
+	# read file line by line and load player names into hash
 	while( my $line = <$FH>)  
 	{   
 		my @vals=split(/\|/, $line);
 
-		#$possible_player_names->{'$vals[0]'}='$vals[1]';
-		chomp($vals[1]);
+		chomp($vals[1]); # strip newline
 		$possible_player_names{ $vals[0] } = $vals[1];
 	}
 	
@@ -58,24 +89,24 @@ sub generatePlayers()
 	for(my $iter=0; $iter < $num_players; $iter++)
 	{
 		my @hash_keys    = keys %possible_player_names;
-		#print "$_\n" for keys %possible_player_names;
 		my $random_key = $hash_keys[rand @hash_keys];
-		#print "rand key is $random_key\n";
 		my $random_name   = $possible_player_names{$random_key};
 		
+		# put random name in array of current players
 		$current_players[$iter]=$random_name;
-		#print "ans is $random_name\n";
+		 
+		# prevent multiple selection of same player name
+		delete $possible_player_names{$random_key};
 	}	
 }
 
+#  Function Inputs: N/A
+#  Function Description:
+#		this function takes enumerated lists of values and suits and creates a hash of cards corresponding to a full deck
 sub generateDeck()
 {
 	my @suits = ('Clubs', 'Diamonds', 'Hearts', 'Spades');
-	my @faceVals = ('2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace');
-	
-
-	#$cards{"1"}{Suit}   = $suits[0];
-	#$cards{"1"}{FaceVal}   = $faceVals[2];
+	my @faceVals = ('2','3','4','5','6','7','8','9','10','J','Q','K','A');
 	
 	my $tmp_key = 1; # keys will go from 1 o 52
 	foreach my $suit (@suits) 
@@ -87,33 +118,66 @@ sub generateDeck()
 			$tmp_key++;
 		}
 	}
-	
-	#print Dumper(%cards);
 }
 
+#  Function Inputs: N/A
+#  Function Description:
+#		this function randomly deals cards to players, deleting dealt cards from the hash as it goes to prevent repetition
 sub dealCards()
 {
+	# deal to each player
 	foreach my $name (@current_players)
 	{
+		# five cards per player
 		for(my $cardNum=1; $cardNum <=5 ; $cardNum++)
 		{
 			my $cardKey = getCard();
 			my $card = $cards{$cardKey};
-			$hands{ $name }{ $cardNum }=$card;#$cards{$cardNum};
-			delete ($cards{$cardKey});
+			$hands{ $name }{ $cardNum }=$card; # assign this cards hash to the currently loaded player
+			delete ($cards{$cardKey}); # prevent this card from being dealt again
 		}
 	}
-	
-	#print Dumper(%hands);
 }
 
+#  Function Inputs: N/A
+#  Function Description:
+#		this is a helper function for dealCards and is used to grab a random key from the current hash of remaining cards
 sub getCard()
 {
-		my @hash_keys    = keys %cards;
-		#print "$_\n" for keys %possible_player_names;
-		my $random_key = $hash_keys[rand @hash_keys];
-		#print "rand key is $random_key\n";
-		return $random_key;
+	my @hash_keys    = keys %cards;
+	my $random_key = $hash_keys[rand @hash_keys];
+	return $random_key;
+}
+
+#  Function Inputs: N/A
+#  Function Description:
+#		this function prints the hands of all the current players
+sub showHands()
+{ 
+	print "\nIn this epic showdown of scoundrels, here are the hands dealt... Who will reign supreme?\n\n"; # print a newline before displaying hands
+	foreach my $name (@current_players)
+	{
+		print "Player Name: $name\n";
+		
+		for(my $cardNum=1; $cardNum <=5 ; $cardNum++)
+		{
+			printCard($name, $cardNum);
+		}
+		print "\n";
+	}
 
 }
+
+#  Function Inputs: playerName (name of player for current hand), cardNum (card for current hand 1..5)
+#  Function Description:
+#		this is a helper function for showHands that prints a specific card
+sub printCard()
+{
+	my $playerName = shift;
+	my $cardNum = shift;
+	my $cardSuit = $hands{ $playerName }{ $cardNum }{Suit};
+	my $cardVal = $hands{ $playerName }{ $cardNum }{FaceVal};
+	print "\t$cardVal of $cardSuit\n";
+}
+
 
